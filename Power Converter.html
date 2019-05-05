@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+	<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Power Converter</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="./Power Converter_files/bootstrap.min.css">
+		<script src="./Power Converter_files/jquery.min.js.download"></script>
+		<script src="./Power Converter_files/bootstrap.min.js.download"></script>
+	</head>
+	
+	<body background="./Power Converter_files/bg3.jpg" onload="window.resizeTo(800,600)">
+
+		<div class="container-fluid" style="padding:40px;">
+			<h1 style="color:white; font-family:courier"><b>Power Converter</b></h1>  
+			<p style="font-size:20px; color:yellow;">Change any value, and press Enter or click outside:</p>
+
+			<div class="row" style="padding:20px">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4" style="background-color:orange; font-size:20px; padding:10px; text-align:center; border-radius:15px;">
+					<p><i>Value in dBm : </i></p>
+					<input type="text" value="0" id="dbm" style="text-align:center; color:red;" onchange="input_dbm(this.value)">
+				</div>
+				<div class="col-sm-4"></div>    
+			</div>
+
+			<div class="row" style="padding:20px">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4" style="background-color:orange; font-size:20px; padding:10px; text-align:center; border-radius:15px;">
+					<p><i>Value in V<sub>p-p</sub> : </i></p>
+					<input type="text" value="0" id="vpp" style="text-align:center; color:red;" onchange="input_vpp(this.value)">
+				</div>
+				<div class="col-sm-4"></div>  
+			</div>
+
+			<div class="row" style="padding:20px">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4" style="background-color:orange; font-size:20px; padding:10px; text-align:center; border-radius:15px;">
+					<p><i>Value in V<sub>rms</sub> : </i></p>
+					<input type="text" value="0" id="vrms" style="text-align:center; color:red;" onchange="input_vrms(this.value)">
+				</div>
+				<div class="col-sm-4"></div>    
+			</div>
+
+			<div class="row" style="padding:20px">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4" style="background-color:orange; font-size:20px; padding:10px; text-align:center; border-radius:15px;">
+					<p><i>Value in mW : </i></p>
+					<input type="text" value="0" id="mw" style="text-align:center; color:red;" onchange="input_mw(this.value)">
+				</div>
+				<div class="col-sm-4"></div>    
+			</div>
+		</div>
+
+		<script type="text/javascript">
+
+			function input_vrms(val)
+			{
+				var vrms = parseFloat(val);
+				var mw = 1000*vrms*vrms/50;
+				var dbm = 10*Math.log(mw)/Math.log(10);
+				var vpp = 2*vrms*Math.sqrt(2);
+
+				var mw2 = mw.toPrecision(4);
+				var dbm2 = dbm.toPrecision(4);
+				var vpp2 = vpp.toPrecision(4);
+
+				document.getElementById("vpp").value = vpp2.toString();
+				document.getElementById("mw").value = mw2.toString();
+				document.getElementById("dbm").value = dbm2.toString();
+			}
+
+
+			function input_vpp(val)
+			{
+				var vpp = parseFloat(val);
+				var vrms = 0.5*vpp/Math.sqrt(2);
+				var mw = 1000*vrms*vrms/50;
+				var dbm = 10*Math.log(mw)/Math.log(10);
+
+				var mw2 = mw.toPrecision(4);
+				var dbm2 = dbm.toPrecision(4);
+				var vrms2 = vrms.toPrecision(4);
+
+				document.getElementById("vrms").value = vrms2.toString();
+				document.getElementById("mw").value = mw2.toString();
+				document.getElementById("dbm").value = dbm2.toString();
+			}
+
+
+			function input_dbm(val)
+			{
+				var dbm = parseFloat(val);
+				var mw = Math.pow(10, dbm/10);
+				var vrms = Math.sqrt(50*mw/1000);
+				var vpp = vrms*2*Math.sqrt(2);
+
+				var mw2 = mw.toPrecision(4);
+				var vpp2 = vpp.toPrecision(4);
+				var vrms2 = vrms.toPrecision(4);
+
+				document.getElementById("vrms").value = vrms2.toString();
+				document.getElementById("mw").value = mw2.toString();
+				document.getElementById("vpp").value = vpp2.toString();
+			}
+
+
+			function input_mw(val)
+			{
+				var mw = parseFloat(val);
+				var dbm = 10*Math.log(mw)/Math.log(10);
+				var vrms = Math.sqrt(50*mw/1000);
+				var vpp = vrms*2*Math.sqrt(2);
+
+				var dbm2 = dbm.toPrecision(4);
+				var vpp2 = vpp.toPrecision(4);
+				var vrms2 = vrms.toPrecision(4);
+
+				document.getElementById("vrms").value = vrms2.toString();
+				document.getElementById("vpp").value = vpp2.toString();
+				document.getElementById("dbm").value = dbm2.toString();
+			}
+
+		</script>
+		
+		<div class="row" style="padding:20px; font-family:courier; font-size:17px; color:yellow; position:absolute; top:750px; right:20px;">
+			<p><b>Susmit Bhattacharya, MSSD/MSIG/MRSA</b></p>
+		</div>
+
+	</body>
+</html>
